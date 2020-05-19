@@ -25,13 +25,18 @@ public class RepositoriEscola {
 	
 	
 	public Matricula apunta (String alumne, String curs) throws EdatIncorrecteException {
-	    Matricula matricula = new Matricula();
 	    Alumne alumno = em.find(Alumne.class, alumne);
 	    Curs curso = em.find(Curs.class, curs);
-	    matricula.setAlumne(alumno);
-	    matricula.setCurs(curso);
-	    em.persist(matricula);
-	    return matricula;
+	    
+	    if (alumno.getEdat() >= curso.getEdatMinima()) {
+	    	Matricula matricula = new Matricula();
+		    matricula.setAlumne(alumno);
+		    matricula.setCurs(curso);
+		    em.persist(matricula);
+		    return matricula;
+	    } else {
+	    	throw new EdatIncorrecteException();
+	    }
 	}
 	
 	
